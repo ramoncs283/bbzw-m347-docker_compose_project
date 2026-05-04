@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine, text
@@ -15,8 +17,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+os.load_dotenv()
+
 # Hardcoded – wird in dieser Woche durch .env ersetzt!
-DATABASE_URL = "postgresql://ticketuser:secret@db:5432/ticketdb"
+DATABASE_URL = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT')}/{os.getenv('POSTGRES_DB')}"
 
 engine = create_engine(DATABASE_URL)
 
